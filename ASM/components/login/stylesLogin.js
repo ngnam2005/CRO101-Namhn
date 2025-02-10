@@ -22,10 +22,11 @@ export const styles = StyleSheet.create({
         width: "100%",
         height: 200,
         resizeMode: "contain",
-        marginBottom: 16,
+        // marginBottom: 16,
     },
     scrollView: {
         padding: 16,
+        flex: 1,
     },
     inputContainer: {
         marginBottom: 16,
