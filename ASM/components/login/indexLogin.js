@@ -1,10 +1,9 @@
-import { Text, Image, View, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Button } from "react-native";
+import { Text, Image, View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { styles } from "./stylesLogin";
-import React, { useState } from "react";
+import React from "react";
 import Input from "../../components/inputText";
 
-const Login = () => {
-
+const Login = ({ navigation }) => { 
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -15,14 +14,14 @@ const Login = () => {
                 <Text style={styles.subText}>Hello again you have been missed!</Text>
                 <Image
                     style={styles.image}
-                    source={require('../../assets/icon.png')}
+                    source={require('../../assets/rv_logo.png')}
                 />
                 <Input label="Email Address" placeholder="Enter your email address" />
                 <Input label="Password" placeholder="*********" isPassword={true} />
                 <TouchableOpacity>
                     <Text style={styles.forgotText}>Forgot password</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => console.log('Login Pressed')}>
+                <TouchableOpacity style={styles.button}>
                     <Text style={styles.welcomeText}>Login</Text>
                 </TouchableOpacity>
                 <View style={styles.dividerContainer}>
@@ -42,7 +41,6 @@ const Login = () => {
                             style={styles.socialIcon}
                             source={require('../../assets/apple-logo.png')}
                         />
-
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.socialButton}>
                         <Image
@@ -50,16 +48,16 @@ const Login = () => {
                             source={require('../../assets/google.png')}
                         />
                     </TouchableOpacity>
-                </View>
+                    </View>
                 <View style={styles.registerContainer}>
                     <Text style={styles.registerText}>Don't have an account? </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Register")}>
                         <Text style={styles.registerLink}>Register</Text>
                     </TouchableOpacity>
                 </View>
-
             </ScrollView>
         </KeyboardAvoidingView>
     );
 };
+
 export default Login;

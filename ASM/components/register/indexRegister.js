@@ -1,9 +1,9 @@
-import { styles } from "./stylesRegister";
 import React from "react";
-import Input from "../inputText";
 import { View, KeyboardAvoidingView, ScrollView, Text, Image, Platform, TouchableOpacity } from "react-native";
+import { styles } from "./stylesRegister";
+import Input from "../../components/inputText";
 
-const Resgiter = () => {
+const Register = ({ navigation }) => {
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -14,13 +14,13 @@ const Resgiter = () => {
                 <Input label="Name" placeholder="Enter your name" />
                 <Input label="Email Address" placeholder="Enter your email address" />
                 <Input label="Password" placeholder="*********" isPassword={true} />
-                <Input label="Enter password" placeholder="********" isPassword={true} />
-                <TouchableOpacity style={styles.button} onPress={() => console.log('Login Pressed')}>
+                <Input label="Confirm Password" placeholder="********" isPassword={true} />
+                <TouchableOpacity style={styles.button}>
                     <Text style={styles.textButton}>Register</Text>
                 </TouchableOpacity>
                 <View style={styles.dividerContainer}>
                     <View style={styles.divider} />
-                    <Text style={styles.dividerText}>Or Continueinue with</Text>
+                    <Text style={styles.dividerText}>Or Continue with</Text>
                     <View style={styles.divider} />
                 </View>
                 <View style={styles.socialContainer}>
@@ -35,7 +35,6 @@ const Resgiter = () => {
                             style={styles.socialIcon}
                             source={require('../../assets/apple-logo.png')}
                         />
-
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.socialButton}>
                         <Image
@@ -45,15 +44,14 @@ const Resgiter = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.loginContainer}>
-                    <Text style={styles.loginText}>I really have an Account  |  </Text>
-                    <TouchableOpacity>
+                    <Text style={styles.loginText}>Already have an account? </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                         <Text style={styles.loginLink}>Login</Text>
                     </TouchableOpacity>
                 </View>
-
             </ScrollView>
-        </KeyboardAvoidingView >
+        </KeyboardAvoidingView>
     );
 };
 
-export default Resgiter;
+export default Register;
