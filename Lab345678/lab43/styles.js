@@ -3,31 +3,32 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff", 
+        backgroundColor: "#fff",
         padding: 16,
     },
     welcomeText: {
         fontSize: 24,
         fontWeight: "bold",
         color: "#4f63ac",
-        marginBottom: 8, 
+        marginBottom: 8,
+        fontFamily: "Anton"
     },
     subText: {
         fontSize: 16,
         color: "#8b9bb5",
-        marginBottom: 16, 
+        marginBottom: 16,
     },
     image: {
-        width: "100%", 
-        height: 200, 
-        resizeMode: "contain", 
+        width: "100%",
+        height: 200,
+        resizeMode: "contain",
         marginBottom: 16,
     },
     scrollView: {
-        padding: 16, 
+        padding: 16,
     },
     inputContainer: {
-        marginBottom: 16, 
+        marginBottom: 16,
     },
     dividerContainer: {
         flexDirection: "row",
