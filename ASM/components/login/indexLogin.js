@@ -1,9 +1,11 @@
 import { Text, Image, View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { styles } from "./stylesLogin";
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../components/inputText";
+import CheckBox from "../../components/checkBox";
 
-const Login = ({ navigation }) => { 
+const Login = ({ navigation }) => {
+    const [checked, setCheck] = useState(false);
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -18,9 +20,15 @@ const Login = ({ navigation }) => {
                 />
                 <Input label="Email Address" placeholder="Enter your email address" />
                 <Input label="Password" placeholder="*********" isPassword={true} />
-                <TouchableOpacity>
-                    <Text style={styles.forgotText}>Forgot password</Text>
-                </TouchableOpacity>
+                <View style={styles.checkRow}>
+                    <CheckBox checked={checked} onCheck={setCheck} />
+                    <Text style={styles.checkText}>I agree with Terms & Privacy</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.forgotText}>Forgot password</Text>
+                    </TouchableOpacity>
+                </View>
+
+
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.welcomeText}>Login</Text>
                 </TouchableOpacity>
@@ -48,7 +56,7 @@ const Login = ({ navigation }) => {
                             source={require('../../assets/google.png')}
                         />
                     </TouchableOpacity>
-                    </View>
+                </View>
                 <View style={styles.registerContainer}>
                     <Text style={styles.registerText}>Don't have an account? </Text>
                     <TouchableOpacity onPress={() => navigation.navigate("Register")}>
