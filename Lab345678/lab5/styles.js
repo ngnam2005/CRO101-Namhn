@@ -10,7 +10,8 @@ export const styles = StyleSheet.create({
     },
     fontText: {
         fontFamily: 'NotoSerif',
-        fontSize: 20
+        fontSize: 20,
+        
     },
     text:{
         fontSize:16

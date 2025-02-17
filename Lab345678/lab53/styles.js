@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     },
     header: {
         flex: 7,
-        position: "relative",  
+        position: "relative",
     },
     image: {
         width: "100%",
@@ -79,6 +79,7 @@ export const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 6,
+        marginTop: -25,
     },
     price: {
         fontSize: 18,
