@@ -8,11 +8,12 @@ import Lab5Bai2 from "./lab52";
 import Lab5Bai3 from "./lab53";
 import Lab6Bai1 from "./lab61";
 import Lab6Bai2 from "./lab61";
+import { NavigationContainer } from "@react-navigation/native";
 
 
 const App = () => {
   return (
-    <Lab6Bai2></Lab6Bai2>
+      <Lab6Bai1></Lab6Bai1>
   )
 };
 

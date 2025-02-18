@@ -8,13 +8,8 @@ import ChatScreen from "./ChatScreen";
 import DetailsScreen from "./DetailsScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
-import { Container, Content, Header } from "native-base";
-import { Text, Image } from "react-native";
-
-
-
-
-
+import 'react-native-gesture-handler';
+import CustomDrawer from "./CustomDrawer";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -23,7 +18,7 @@ const Drawer = createDrawerNavigator();
 function Lab6Bai1() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Bai2">
+            <Stack.Navigator >
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
@@ -57,47 +52,46 @@ function Lab6Bai1() {
 function Lab6Bai2() {
     return (
         <Drawer.Navigator
-            initialRouteName="Home"
-        >
-            <Drawer.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                    drawerIcon: ({ focused, size }) => (
-                        <Ionicons name="home-outline" size={size} color={focused ? '#6200EE' : '#000'} />
-                    ),
-                }}
-            />
-            <Drawer.Screen
-                name="Profile"
-                component={ProfileScreen}
-                options={{
-                    drawerIcon: ({ focused, size }) => (
-                        <Ionicons name="person-outline" size={size} color={focused ? '#6200EE' : '#000'} />
-                    ),
-                }}
-            />
-            <Drawer.Screen
-                name="Chat"
-                component={ChatScreen}
-                options={{
-                    drawerIcon: ({ focused, size }) => (
-                        <Ionicons name="chatbubble-outline" size={size} color={focused ? '#6200EE' : '#000'} />
-                    ),
-                }}
-            />
-            <Drawer.Screen
-                name="Details"
-                component={DetailsScreen}
-                options={{
-                    drawerIcon: ({ focused, size }) => (
-                        <Ionicons name="information-circle-outline" size={size} color={focused ? '#6200EE' : '#000'} />
-                    ),
-                }}
-            />
-        </Drawer.Navigator>
-
-
+        nitialRouteName="Home"
+        drawerContent={props => <CustomDrawer {...props} />} 
+    >
+        <Drawer.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+                drawerIcon: ({ focused, size }) => (
+                    <Ionicons name="home-outline" size={size} color={focused ? '#6200EE' : '#000'} />
+                ),
+            }}
+        />
+        <Drawer.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+                drawerIcon: ({ focused, size }) => (
+                    <Ionicons name="person-outline" size={size} color={focused ? '#6200EE' : '#000'} />
+                ),
+            }}
+        />
+        <Drawer.Screen
+            name="Chat"
+            component={ChatScreen}
+            options={{
+                drawerIcon: ({ focused, size }) => (
+                    <Ionicons name="chatbubble-outline" size={size} color={focused ? '#6200EE' : '#000'} />
+                ),
+            }}
+        />
+        <Drawer.Screen
+            name="Details"
+            component={DetailsScreen}
+            options={{
+                drawerIcon: ({ focused, size }) => (
+                    <Ionicons name="information-circle-outline" size={size} color={focused ? '#6200EE' : '#000'} />
+                ),
+            }}
+        />
+    </Drawer.Navigator>
     );
 }
 
