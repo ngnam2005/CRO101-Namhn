@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import checkBox from ".";
+
 
 export const styles = StyleSheet.create({
     container: {

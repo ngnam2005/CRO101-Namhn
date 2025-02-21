@@ -1,15 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
-import { ScrollView, View, Text, Image, FlatList, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, View, Text, Image, FlatList, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import API_BASE_URL from "../localhost/localhost";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
-const categories = [
-  { id: 1, name: "Hoodies", image: "https://via.placeholder.com/50" },
-  { id: 2, name: "Shorts", image: "https://via.placeholder.com/50" },
-  { id: 3, name: "Shoes", image: "https://via.placeholder.com/50" },
-  { id: 4, name: "Bag", image: "https://via.placeholder.com/50" },
-  { id: 5, name: "Accessories", image: "https://via.placeholder.com/50" },
-];
 
 const products = [
   { id: 1, name: "Men's Harrington Jacket", price: "$148.00", image: "https://via.placeholder.com/100" },
@@ -17,15 +13,36 @@ const products = [
 ];
 
 function Home() {
+
+  const navigation = useNavigation();
+
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/categories/get`);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh mục:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity>
           <Image source={require('../../assets/rv_logo.png')} style={styles.logo} />
         </TouchableOpacity>
         <Text style={{ fontSize: 16 }}>Men ▼</Text>
         <TouchableOpacity>
-          <Ionicons name="person-circle" size={40} color="purple" />
+          <Ionicons name="cart" size={40} color="black" />
         </TouchableOpacity>
       </View>
 
@@ -35,18 +52,24 @@ function Home() {
       </View>
 
       <Text style={{ fontWeight: "bold", fontSize: 18 }}>Categories</Text>
-      <FlatList
-        horizontal
-        data={categories}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.categoryItem}>
-            <Image source={{ uri: item.image }} style={styles.categoryImage} />
-            <Text>{item.name}</Text>
-          </View>
-        )}
-      />
 
+      {loading ? (
+        <ActivityIndicator size="large" color="blue" />
+      ) : (
+        <FlatList
+          horizontal
+          data={categories}
+          keyExtractor={(item) => item._id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity>
+              <View style={styles.categoryItem}>
+                <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.categoryImage} />
+                <Text>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
       <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 16 }}>Top Selling</Text>
       <FlatList
         horizontal
@@ -75,7 +98,11 @@ function Home() {
           </View>
         )}
       />
-    </ScrollView>
+
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddProduct")}>
+        <Ionicons name="add" size={40} color="white" />
+      </TouchableOpacity>
+    </View>
   );
 }
 

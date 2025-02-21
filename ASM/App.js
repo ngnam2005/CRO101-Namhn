@@ -6,6 +6,8 @@ import Register from "./components/register/indexRegister";
 import WelcomeScreen from "./components/welcome/indexWelcome";
 import Home from "./components/home";
 import Tabs from "./components/navigation/tab";
+import AddProduct from "./components/addProduct";
+
 
 const Stack = createStackNavigator();
 
@@ -17,7 +19,7 @@ export default function App() {
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Home" component={Home} />  
+        <Stack.Screen name="AddProduct" component={AddProduct}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

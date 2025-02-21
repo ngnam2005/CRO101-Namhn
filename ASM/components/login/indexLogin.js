@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Input from "../../components/inputText";
 import CheckBox from "../../components/checkBox";
 import axios from "axios";
+import API_BASE_URL from "../localhost/localhost";
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -12,30 +13,19 @@ const Login = ({ navigation }) => {
 
     const handleLogin = () => {
         if (!email || !password) {
-            alert("Please enter email and password");
+            alert("Vui lòng nhập email và mật khẩu!");
             return;
         }
     
-        axios.get(`https://67b37c2b392f4aa94fa75ff8.mockapi.io/account`, {
-            params: {
-                email: email,
-                password: password
-            }
-        })
-        .then(response => {
-            if (response.data.length > 0) {
-                const user = response.data[0];
-                console.log("Login successful:", user);
-                alert(`Welcome, ${user.name}!`);
-                navigation.navigate("Register"); 
-            } else {
-                alert("Invalid email or password. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Login failed:", error);
-            alert("An error occurred. Please try again.");
-        });
+        axios.post(`${API_BASE_URL}/api/users/login`, { email, password })
+            .then(response => {
+                alert(`Chào mừng, ${response.data.user.name}!`);
+                navigation.navigate("Tabs"); 
+            })
+            .catch(error => {
+                alert(error.response?.data?.message || "Đăng nhập thất bại. Vui lòng thử lại!");
+                console.error("Lỗi đăng nhập:", error);
+            });
     };
 
     return (

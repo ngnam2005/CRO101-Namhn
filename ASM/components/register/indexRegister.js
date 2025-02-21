@@ -3,6 +3,8 @@ import { View, KeyboardAvoidingView, ScrollView, Text, Alert, TouchableOpacity, 
 import { styles } from "./stylesRegister";
 import Input from "../../components/inputText";
 import axios from 'axios';
+import API_BASE_URL from "../localhost/localhost";
+
 
 const Register = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -32,7 +34,7 @@ const Register = ({ navigation }) => {
         }
 
         const FormData = { name, email, password };
-        axios.post("https://67b37c2b392f4aa94fa75ff8.mockapi.io/account", FormData)
+        axios.post(`${API_BASE_URL}/api/users/register`, FormData)
             .then(response => {
                 Alert.alert("Thành công", "Tài khoản đã được tạo!");
                 navigation.navigate("Login");
