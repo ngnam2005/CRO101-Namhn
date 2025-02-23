@@ -18,7 +18,7 @@ const BottomTabs = () => {
                     let iconName;
                     if (route.name === "Home") iconName = "home-outline";
                     else if (route.name === "Album") iconName = "book-outline";
-                    else if (route.name === "Singer") iconName = "musical-notes-outline";
+                    else if (route.name === "Singer") iconName = "person-outline";
                     return <Ionicons name={iconName} size={size} color={'white'} />;
                 },
                 tabBarStyle: { backgroundColor: '#a3c9eb' },
