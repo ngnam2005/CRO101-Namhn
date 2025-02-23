@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, ActivityIndicator, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import API_BASE_URL from "../localhost/localhost";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
+import CheckBox from "../checkBox/index"; // Import CheckBox
 
-const sizeOptions = ["S", "M", "L", "XL", "XXL"]; // Kích thước mặc định
+const sizeOptions = ["S", "M", "L", "XL", "XXL"]; // Danh sách kích thước
 
 const AddProduct = ({ navigation }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
-  const [sizes, setSizes] = useState(sizeOptions[0]);
+  const [price, setPrice] = useState(""); 
+  const [sizes, setSizes] = useState([]); // Mảng chứa size được chọn
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Gọi API lấy danh mục sản phẩm
+  // Lấy danh mục sản phẩm từ API
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/categories/get`);
         setCategories(response.data);
-  
-        // Nếu category chưa có giá trị, gán danh mục đầu tiên
         if (!category && response.data.length > 0) {
           setCategory(response.data[0]._id);
         }
@@ -36,10 +36,10 @@ const AddProduct = ({ navigation }) => {
         setLoading(false);
       }
     };
-  
+
     fetchCategories();
   }, []);
-  
+
   // Chọn ảnh từ thư viện
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,7 +56,7 @@ const AddProduct = ({ navigation }) => {
 
   // Gửi dữ liệu sản phẩm lên API
   const handleSubmit = async () => {
-    if (!name || !category || !stock || !sizes || !description || !image) {
+    if (!name || !category || !stock || !price || sizes.length === 0 || !description || !image) {
       Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
       return;
     }
@@ -65,7 +65,8 @@ const AddProduct = ({ navigation }) => {
     formData.append("name", name);
     formData.append("category", category);
     formData.append("stock", stock);
-    formData.append("sizes", sizes);
+    formData.append("price", price);
+    formData.append("sizes", JSON.stringify(sizes.map(size => size.replace(/["[\]]/g, ''))));// 🔥 Lưu sizes dưới dạng JSON chuẩn
     formData.append("description", description);
     formData.append("image", {
       uri: image,
@@ -85,8 +86,8 @@ const AddProduct = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
       <Text style={styles.title}>Thêm Sản Phẩm</Text>
@@ -97,43 +98,35 @@ const AddProduct = ({ navigation }) => {
         <>
           <TextInput placeholder="Tên sản phẩm" value={name} onChangeText={setName} style={styles.input} />
 
-          {/* Picker chọn danh mục từ API */}
           <Text style={styles.label}>Loại sản phẩm:</Text>
-          <Picker
-  selectedValue={category}
-  onValueChange={(itemValue) => {
-    console.log("Chọn danh mục:", itemValue); // Debug giá trị chọn
-    setCategory(itemValue); // Đảm bảo itemValue là chuỗi
-  }}
-  style={styles.picker}
->
-  {categories.length > 0 ? (
-    categories.map((cat) => (
-      <Picker.Item key={cat._id} label={cat.name} value={cat._id} />
-    ))
-  ) : (
-    <Picker.Item label="Đang tải danh mục..." value="" />
-  )}
-</Picker>
-
-            <TextInput
-            placeholder="Số lượng"
-            value={stock}
-            onChangeText={(text) => {
-                const numericValue = text.replace(/[^0-9]/g, ""); // Chỉ cho nhập số
-                setStock(numericValue);
-            }}
-            keyboardType="numeric"
-            style={styles.input}
-            />
-
-          {/* Picker chọn size */}
-          <Text style={styles.label}>Kích thước:</Text>
-          <Picker selectedValue={sizes} onValueChange={(itemValue) => setSizes(itemValue)} style={styles.picker}>
-            {sizeOptions.map((size, index) => (
-              <Picker.Item key={index} label={size} value={size} />
-            ))}
+          <Picker selectedValue={category} onValueChange={(itemValue) => setCategory(itemValue)} style={styles.picker}>
+            {categories.length > 0 ? (
+              categories.map((cat) => (
+                <Picker.Item key={cat._id} label={cat.name} value={cat._id} />
+              ))
+            ) : (
+              <Picker.Item label="Đang tải danh mục..." value="" />
+            )}
           </Picker>
+
+          <TextInput placeholder="Số lượng" value={stock} onChangeText={(text) => setStock(text.replace(/[^0-9]/g, ""))} keyboardType="numeric" style={styles.input} />
+          <TextInput placeholder="Giá sản phẩm" value={price} onChangeText={(text) => setPrice(text.replace(/[^0-9]/g, ""))} keyboardType="numeric" style={styles.input} />
+
+          {/* CheckBox chọn nhiều kích thước */}
+          <Text style={styles.label}>Kích thước:</Text>
+          <View style={styles.checkboxContainer}>
+            {sizeOptions.map((size, index) => (
+              <View key={index} style={styles.checkboxItem}>
+                <CheckBox 
+                    checked={sizes.includes(size)} 
+                    onCheck={(isChecked) => {
+                      setSizes((prevSizes) => isChecked ? [...prevSizes, size] : prevSizes.filter(s => s !== size));
+                    }} 
+                  />
+                <Text style={styles.checkboxLabel}>{size}</Text>
+              </View>
+            ))}
+          </View>
 
           <TextInput placeholder="Mô tả" value={description} onChangeText={setDescription} style={styles.input} />
 
@@ -147,7 +140,7 @@ const AddProduct = ({ navigation }) => {
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

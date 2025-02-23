@@ -16,7 +16,7 @@ import Lab73 from "./lab7/Lab73";
 
 const App = () => {
   return (
-      <Lab73></Lab73>
+    <Lab73></Lab73>
   )
 };
 

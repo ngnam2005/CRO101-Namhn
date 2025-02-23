@@ -39,9 +39,9 @@ const Tabs = () => {
             })}
         >
             <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Profile" component={Profile} />
             <Tab.Screen name="Cart" component={Cart} />
             <Tab.Screen name="Order" component={OrderScreen} />
+            <Tab.Screen name="Profile" component={Profile} />
             
         </Tab.Navigator>
     );
