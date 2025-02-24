@@ -50,9 +50,19 @@ const DetailProduct = () => {
         }
     };
     
-
-
-
+    const handleBuyNow = () => {
+        const cartItems = [{
+            productId: product._id,
+            name: product.name,
+            image: product.image,
+            size: selectedSize,
+            quantity,
+            price: product.price,
+        }];
+    
+        navigation.navigate("Checkout", { cartItems });
+    };
+    
     return (
         <View style={styles.container}>
             {/* Nút Back */}
@@ -118,7 +128,7 @@ const DetailProduct = () => {
                 <TouchableOpacity style={styles.addToCart} onPress={addToCart}>
                     <Text style={styles.addToCartText}>${product.price * quantity} | Add to Cart</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buyNow}>
+                <TouchableOpacity style={styles.buyNow} onPress={handleBuyNow}>
                     <Text style={styles.buyNowText}>${product.price * quantity} | Buy Now</Text>
                 </TouchableOpacity>
             </View>

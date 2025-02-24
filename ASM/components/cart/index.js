@@ -124,6 +124,14 @@ const Cart = () => {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
+  const handleCheckout = async () => {
+    if (!userId || cart.length === 0) return;
+
+    navigation.navigate("Checkout", { cartItems: cart, total: total });
+  };
+
+  //=======COMPONENTS================================
+
   if (cart.length === 0) {
     return (
       <View style={styles.emptyCartContainer}>
@@ -139,8 +147,8 @@ const Cart = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
       <Text style={styles.title}>Cart</Text>
       <TouchableOpacity onPress={clearCart} style={styles.clearButton}>
         <Text style={styles.removeAll}>Remove All</Text>
@@ -177,7 +185,7 @@ const Cart = () => {
         <Text style={styles.boldText}>Tổng: {total.toFixed(1)} VND</Text>
       </View>
 
-      <TouchableOpacity style={styles.checkoutButton}>
+      <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
         <Text style={styles.checkoutText}>Thanh toán</Text>
       </TouchableOpacity>
     </View>

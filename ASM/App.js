@@ -12,6 +12,8 @@ import UpdateProfile from "./components/updateUser/updateUser";
 import ChangePassword from "./components/changePass";
 import ForgotPass from "./components/forgotPass";
 import Cart from "./components/cart";
+import Checkout from "./components/checkout";
+import categoryScreen from "./components/categoryScreen";
 
 
 const Stack = createStackNavigator();
@@ -30,6 +32,8 @@ export default function App() {
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="ForgotPassword" component={ForgotPass} />
         <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="categoryScreen" component={categoryScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

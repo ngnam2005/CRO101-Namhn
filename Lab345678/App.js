@@ -13,10 +13,12 @@ import Lab7 from "./lab7";
 import TopTabs from "./lab7/topTab";
 //Lab7.3
 import Lab73 from "./lab7/Lab73";
+//Lab8
+import Crud from "./lab8/CRUD";
 
 const App = () => {
   return (
-    <Lab73></Lab73>
+    <Crud></Crud>
   )
 };
 

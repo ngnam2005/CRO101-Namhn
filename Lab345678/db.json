@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "name": "Hồ Ngọc Nam",
+      "birthday": "25-04-2005",
+      "image": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FLab345678-a1d4f478-3ce0-4987-af81-1240d84c6ecd/ImagePicker/9770562d-8230-4c8d-9eb8-106c0ac4f49e.jpeg",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "name": "Lê Văn A",
+      "birthday": "02-03-2006"
+    },
+    {
+      "id": "4ce3",
+      "name": "Phùng  Thanh Độ ",
+      "birthday": "02/09/1999",
+      "image": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FLab345678-a1d4f478-3ce0-4987-af81-1240d84c6ecd/ImagePicker/d517d424-f662-431c-8b49-a6c94b4716f3.png"
+    },
+    {
+      "id": "8c81",
+      "name": "Sơn Tùng ",
+      "birthday": "30/12/1999",
+      "image": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FLab345678-a1d4f478-3ce0-4987-af81-1240d84c6ecd/ImagePicker/f8c3302c-bf0a-4f31-b967-3ecf9126cfa9.png"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { 
-  View, Text, Image, FlatList, TextInput, TouchableOpacity, 
-  ActivityIndicator, ScrollView, RefreshControl 
+import {
+  View, Text, Image, FlatList, TextInput, TouchableOpacity,
+  ActivityIndicator, ScrollView, RefreshControl
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
@@ -14,7 +14,7 @@ function Home() {
   const [product, setProduct] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false); // Thêm state để kiểm soát refresh
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchCategories = async () => {
     try {
@@ -92,7 +92,7 @@ function Home() {
             keyExtractor={(item) => item._id.toString()}
             renderItem={({ item }) => (
               <View style={styles.categoryItem}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("categoryScreen", { categoryId: item._id})}>
                   <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.categoryImage} />
                   <Text>{item.name}</Text>
                 </TouchableOpacity>
@@ -138,8 +138,8 @@ function Home() {
             contentContainerStyle={{ paddingHorizontal: 10 }}
             renderItem={({ item }) => (
               <View style={styles.productGrid}>
-                <TouchableOpacity 
-                  style={styles.productCard} 
+                <TouchableOpacity
+                  style={styles.productCard}
                   onPress={() => navigation.navigate("Detail", { product: item })}>
                   <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productGridImage} />
                   <Text style={styles.productName}>
@@ -153,7 +153,7 @@ function Home() {
         )}
       </ScrollView>
 
-      
+
       <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddProduct")}>
         <Ionicons name="add" size={40} color="white" />
       </TouchableOpacity>
