@@ -2,66 +2,84 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
-    backgroundColor: "#fff",
-    marginTop: 10,
+    backgroundColor: "#f9f9f9",
+  },
+  backButton: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    padding: 10,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 20,
+    marginVertical: 20,
   },
   input: {
+    backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#ddd",
+    borderRadius: 8,
     padding: 10,
+    fontSize: 16,
+    marginBottom: 12,
+  },
+  picker: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
     borderRadius: 8,
     marginBottom: 12,
   },
-  button: {
-    backgroundColor: "#3498db",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "white",
+  label: {
     fontSize: 16,
     fontWeight: "bold",
-  },
-  image: {
-    width: 100,
-    height: 100,
-    resizeMode: "cover",
-    alignSelf: "center",
-    marginTop: 10,
-  },
-  backButton: {
-    position: "absolute",
-    top: 20,
-    left: 20,
-    zIndex: 10,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 8,
+    marginBottom: 6,
   },
   checkboxContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginVertical: 10,
+    marginBottom: 12,
   },
   checkboxItem: {
     flexDirection: "row",
     alignItems: "center",
     marginRight: 15,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   checkboxLabel: {
+    fontSize: 16,
     marginLeft: 8,
+  },
+  imagePicker: {
+    backgroundColor: "#007BFF",
+    padding: 10,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  imagePickerText: {
+    color: "#fff",
     fontSize: 16,
   },
+  image: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  button: {
+    backgroundColor: "#28a745",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
-

@@ -9,6 +9,7 @@ import axios from "axios";
 import { Alert } from "react-native";
 
 
+
 const DetailProduct = () => {
     const route = useRoute();
     const navigation = useNavigation();
@@ -28,7 +29,7 @@ const DetailProduct = () => {
                 Alert.alert("Lỗi", "Bạn cần đăng nhập để thêm vào giỏ hàng!");
                 return;
             }
-    
+
             const cartItem = {
                 userId,
                 productId: product._id,
@@ -38,18 +39,18 @@ const DetailProduct = () => {
                 size: selectedSize,
                 quantity,
             };
-    
-            console.log("Dữ liệu gửi lên API:", cartItem); 
-    
+
+            console.log("Dữ liệu gửi lên API:", cartItem);
+
             await axios.post(`${API_BASE_URL}/api/carts/add`, cartItem);
             navigation.navigate("Cart");
-    
+
         } catch (error) {
             Alert.alert("Lỗi", "Không thể thêm vào giỏ hàng!");
             console.error("Lỗi khi thêm vào giỏ hàng:", error);
         }
     };
-    
+
     const handleBuyNow = () => {
         const cartItems = [{
             productId: product._id,
@@ -59,10 +60,10 @@ const DetailProduct = () => {
             quantity,
             price: product.price,
         }];
-    
+
         navigation.navigate("Checkout", { cartItems });
     };
-    
+
     return (
         <View style={styles.container}>
             {/* Nút Back */}

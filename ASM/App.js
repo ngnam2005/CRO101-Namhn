@@ -14,6 +14,9 @@ import ForgotPass from "./components/forgotPass";
 import Cart from "./components/cart";
 import Checkout from "./components/checkout";
 import categoryScreen from "./components/categoryScreen";
+import orderManage from "./components/orderManage";
+import SearchResults from "./components/searchScreen";
+
 
 
 const Stack = createStackNavigator();
@@ -34,6 +37,8 @@ export default function App() {
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen name="categoryScreen" component={categoryScreen} />
+        <Stack.Screen name="orderManage" component={orderManage} />
+        <Stack.Screen name="SearchResults" component={SearchResults} />
       </Stack.Navigator>
     </NavigationContainer>
   );

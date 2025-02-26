@@ -46,6 +46,10 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         color: '#555',
     },
+    userGender: {
+        fontSize: 14,
+        color: "gray",
+    },    
     actionButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',

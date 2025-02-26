@@ -26,10 +26,10 @@ const DoneOrderScreen = () => {
     const handleConfirmReceived = async (orderId) => {
         try {
             const response = await axios.put(`${API_BASE_URL}/api/orders/update/${orderId}`, { status: "Đã hoàn thành" });
-            
+
             if (response.status === 200) {
                 Alert.alert("Thành công", "Đơn hàng đã hoàn thành!");
-                setConfirmedOrders([...confirmedOrders, orderId]); 
+                setConfirmedOrders([...confirmedOrders, orderId]);
             }
         } catch (error) {
             console.error("Lỗi khi xác nhận đơn hàng:", error);
@@ -53,7 +53,7 @@ const DoneOrderScreen = () => {
                             <Text>Địa chỉ: {item.address}</Text>
                             <Text>Ngày đặt: {new Date(item.createdAt).toLocaleDateString()}</Text>
                             <Text>Tổng tiền: {item.total} VND</Text>
-                            
+
                             {/* Danh sách sản phẩm */}
                             <Text style={{ fontWeight: "bold", marginTop: 5 }}>Sản phẩm:</Text>
                             {item.products.map((product, index) => (
@@ -71,7 +71,7 @@ const DoneOrderScreen = () => {
                             ) : (
                                 <TouchableOpacity
                                     onPress={() => handleConfirmReceived(item._id)}
-                                    style={{ backgroundColor: "blue", padding: 10, marginTop: 10 }}
+                                    style={{ backgroundColor: "orange", padding: 10, marginTop: 10 }}
                                 >
                                     <Text style={{ color: "white", textAlign: "center" }}>Xác nhận đã nhận hàng</Text>
                                 </TouchableOpacity>

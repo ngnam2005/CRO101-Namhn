@@ -70,32 +70,48 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-
+  productGrid: {
+    position: "relative", // Để định vị nút dấu +
+    marginBottom: 20,
+  },
+  productCard: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    width: 160, // Đảm bảo kích thước sản phẩm
+  },
   productGridImage: {
-    width: 120,
+    width: "100%",
     height: 120,
     borderRadius: 10,
-    resizeMode: "cover",
   },
-
   productName: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#333",
-    marginTop: 5,
-    textAlign: "center",
-  },
-  productPrice: {
-    fontSize: 12,
     fontWeight: "bold",
-    color: "#FF5733",
     marginTop: 5,
   },
   productGridPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 14,
     color: "#FF5733",
-    marginTop: 5,
+    fontWeight: "bold",
+    marginTop: 3,
+  },
+  addToCartButton: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    backgroundColor: "white",
+    borderRadius: 12,
+    padding: 2,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
   },
   addButton: {
     position: "absolute",
@@ -112,4 +128,25 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 3,
   },
+  cartBadge: {
+    position: "absolute",
+    right: -5,
+    top: -5,
+    backgroundColor: "red",
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cartBadgeText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  productPrice: {
+    fontSize: 11,
+    fontStyle: "normal",
+  }
+
 });

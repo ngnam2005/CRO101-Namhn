@@ -19,6 +19,8 @@ const AddUser = ({ navigation, route }) => {
   const [image, setImage] = useState(userData?.image || null);
   const [name, setName] = useState(userData?.name || "");
   const [birthdate, setBirthdate] = useState(userData?.birthday || "");
+  const [gender, setGender] = useState(userData?.gender || "Male");
+
 
 
   const pickImage = async () => {
@@ -36,16 +38,16 @@ const AddUser = ({ navigation, route }) => {
 
   const handleSave = async () => {
     const url = userData
-      ? `http://192.168.1.10:8081/users/${userData.id}` 
-      : "http://192.168.1.10:8081/users";
+      ? `http://172.16.49.7:3000/users/${userData.id}`
+      : "http://172.16.49.7:3000/users";
 
-    const method = userData ? "PUT" : "POST"; 
+    const method = userData ? "PUT" : "POST";
 
     try {
       let result = await fetch(url, {
         method: method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, birthday: birthdate, image }),
+        body: JSON.stringify({ name, birthday: birthdate, image, gender }),
       });
       result = await result.json();
       if (result) {
@@ -93,6 +95,28 @@ const AddUser = ({ navigation, route }) => {
           value={birthdate}
           onChangeText={setBirthdate}
         />
+        <Text style={{ fontSize: 16, marginTop: 10 }}>Giới tính:</Text>
+        <View style={{ flexDirection: "row", marginVertical: 10 }}>
+          <TouchableOpacity
+            onPress={() => setGender("Male")}
+            style={[
+              stylesAdd.genderButton,
+              gender === "Male" && stylesAdd.genderButtonSelected,
+            ]}
+          >
+            <Text style={stylesAdd.genderText}>Nam</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setGender("Female")}
+            style={[
+              stylesAdd.genderButton,
+              gender === "Female" && stylesAdd.genderButtonSelected,
+            ]}
+          >
+            <Text style={stylesAdd.genderText}>Nữ</Text>
+          </TouchableOpacity>
+        </View>
+
 
         <Button
           title={userData ? "Cập Nhật" : "Thêm"}
@@ -144,6 +168,20 @@ const stylesAdd = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
+  genderButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    marginHorizontal: 5,
+},
+genderButtonSelected: {
+    backgroundColor: "lightblue",
+},
+genderText: {
+    fontSize: 16,
+},
+
 });
 
 export default AddUser;

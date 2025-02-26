@@ -65,7 +65,7 @@ const ShippingScreen = () => {
 
                             <TouchableOpacity
                                 onPress={() => handleDeliverOrder(item._id)}
-                                style={{ backgroundColor: "blue", padding: 10, marginTop: 10 }}
+                                style={{ backgroundColor: "red", padding: 10, marginTop: 10 }}
                             >
                                 <Text style={{ color: "white", textAlign: "center" }}>Giao hàng</Text>
                             </TouchableOpacity>

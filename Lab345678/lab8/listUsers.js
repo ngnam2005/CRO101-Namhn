@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
 import { styles } from "./styles";
+import { Ionicons } from "@expo/vector-icons";
 
 const ListUser = ({ navigation }) => {
     const [data, setData] = useState([]);
 
     const getAPI = async () => {
-        const url = "http://192.168.1.10:8081/users";
+        const url = "http://172.16.49.7:3000/users";
         try {
             let result = await fetch(url);
             result = await result.json();
@@ -19,7 +20,7 @@ const ListUser = ({ navigation }) => {
     };
 
     const handleDelete = async (id) => {
-        const url = `http://192.168.1.10:8081/users/${id}`;
+        const url = `http://172.16.49.7:3000/users/${id}`;
         try {
             let result = await fetch(url, { method: "DELETE" });
             result = await result.json();
@@ -38,7 +39,6 @@ const ListUser = ({ navigation }) => {
 
     useEffect(() => {
         const focusHandle = navigation.addListener("focus", getAPI);
-        // navigation.setOptions({ title: "UpdateUser" });
         return () => focusHandle();
     }, [navigation]);
 
@@ -61,12 +61,28 @@ const ListUser = ({ navigation }) => {
                             source={item.image ? { uri: item.image } : require("../assets/avatar.jpg")}
                             style={styles.userImage}
                         />
-
                         <View style={styles.userInfo}>
                             <Text style={styles.userName}>{item.name}</Text>
-                            <Text style={styles.userBirthday}>{item.birthday}</Text>
+                            <Text style={styles.userBirthday}>{item.birthday}</Text>       
+                                <View style={styles.genderContainer}>
+                                    <Ionicons
+                                        name={
+                                            item.gender === "Female" ? "female-outline" :
+                                            item.gender === "Male" ? "male-outline" :
+                                            "help-circle-outline"
+                                        }
+                                        size={20}
+                                        color={
+                                            item.gender === "Female" ? "pink" :
+                                            item.gender === "Male" ? "blue" :
+                                            "gray"
+                                        }
+                                    />
+                                    <Text style={styles.userGender}>
+                                        {item.gender || "Not specified"}
+                                    </Text>
+                                </View>
                         </View>
-
                         <View style={styles.actionButtons}>
                             <TouchableOpacity
                                 style={styles.updateButton}

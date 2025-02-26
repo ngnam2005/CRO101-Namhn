@@ -76,6 +76,13 @@ const Profile = () => {
         <Text style={styles.buttonText}>Đổi mật khẩu</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={() => navigation.navigate("orderManage")}
+      >
+        <Text style={styles.buttonText}>Quản lý & thông kê</Text>
+      </TouchableOpacity>
+
       <View style={styles.divider} />
 
       <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
