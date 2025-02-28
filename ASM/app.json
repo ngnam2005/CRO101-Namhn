@@ -3,20 +3,23 @@
     "name": "ASM",
     "slug": "ASM",
     "version": "1.0.0",
+    "scheme": "asmapp",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.asm.app"
     },
     "android": {
-      "package": "com.asm.app", 
+      "package": "com.asm.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -24,6 +27,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d4b40578-7761-46a2-a385-0421552d3d60"
+      }
+    },
+    "owner": "hngnam04"
   }
 }

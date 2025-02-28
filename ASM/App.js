@@ -16,6 +16,10 @@ import Checkout from "./components/checkout";
 import categoryScreen from "./components/categoryScreen";
 import orderManage from "./components/orderManage";
 import SearchResults from "./components/searchScreen";
+import Profile from "./components/profile";
+import AddressScreen from "./components/address";
+import AuthLoadingScreen from "./components/AuthLoadingScreen";
+
 
 
 
@@ -24,7 +28,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Tabs" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="AuthLoadingScreen" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tabs" component={Tabs} />
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="Login" component={Login} />
@@ -39,6 +43,8 @@ export default function App() {
         <Stack.Screen name="categoryScreen" component={categoryScreen} />
         <Stack.Screen name="orderManage" component={orderManage} />
         <Stack.Screen name="SearchResults" component={SearchResults} />
+        <Stack.Screen name="AddressScreen" component={AddressScreen} />
+        <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

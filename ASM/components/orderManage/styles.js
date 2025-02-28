@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     revenueContainer: {
-        marginTop: 20
+        marginTop: 10
     },
     revenue: {
         fontSize: 18,
@@ -50,6 +50,28 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginVertical: 10,
         color: "gray"
+    },
+    filterContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        marginTop: 20,
+    },
+
+    filterButton: {
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        backgroundColor: "#ddd",
+        borderRadius: 20,
+    },
+
+    filterButtonActive: {
+        backgroundColor: "#FF6347", // Màu cam đỏ
+    },
+
+    filterButtonText: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "black",
     }
 });
 

@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator,ScrollView ,RefreshControl} from "react-native";
 import axios from "axios";
 import API_BASE_URL from "../localhost/localhost";
 
 const ShippingScreen = () => {
     const [orders, setOrders] = useState([]);
-    const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchOrders();
     }, []);
 
     const fetchOrders = async () => {
-        setRefreshing(true);
+        setLoading(true);
         try {
             const response = await axios.get(`${API_BASE_URL}/api/orders/status/Đang vận chuyển`);
             setOrders(response.data);
         } catch (error) {
             console.error("Lỗi khi tải đơn hàng:", error);
             setOrders([]);
-            Alert.alert("Lỗi", "Không thể tải đơn hàng. Vui lòng thử lại!");
+            Alert.alert("Lỗi", "Không thể tải đơn hàng!");
         } finally {
-            setRefreshing(false);
+            setLoading(false);
         }
     };
 
@@ -30,44 +30,67 @@ const ShippingScreen = () => {
             const response = await axios.put(`${API_BASE_URL}/api/orders/update/${orderId}`, { status: "Đã giao" });
 
             if (response.status === 200) {
-                fetchOrders(); // 🔹 Cập nhật danh sách ngay lập tức
+                fetchOrders();
                 Alert.alert("Thành công", "Đơn hàng đã được giao!");
             } else {
-                Alert.alert("Lỗi", "Không thể giao đơn hàng, thử lại!");
+                Alert.alert("Lỗi", "Giao hàng thất bại, thử lại!");
             }
         } catch (error) {
             console.error("Lỗi khi cập nhật đơn hàng:", error);
-            Alert.alert("Lỗi", "Đã xảy ra lỗi khi giao đơn hàng!");
+            Alert.alert("Lỗi", "Có lỗi xảy ra khi giao đơn hàng!");
         }
     };
 
     return (
-        <View>
-            {orders.length === 0 ? (
-                <Text style={{ textAlign: "center", marginTop: 20 }}>Không có đơn hàng nào</Text>
+        <View style={{ flex: 1, padding: 20 }}>
+            {loading ? (
+                <ActivityIndicator size="large" color="blue" />
+            ) : orders.length === 0 ? (
+                <ScrollView 
+                contentContainerStyle={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={fetchOrders} />
+                }
+            >
+                <Text style={{ textAlign: "center", fontSize: 16 }}>Không có đơn hàng nào</Text>
+            </ScrollView>
             ) : (
                 <FlatList
                     data={orders}
                     keyExtractor={(item) => item._id}
-                    refreshing={refreshing}
+                    refreshing={loading}
                     onRefresh={fetchOrders}
                     renderItem={({ item }) => (
-                        <View style={{ padding: 10, borderBottomWidth: 1 }}>
-                            <Text>Người đặt: {item.userName}</Text>
-                            <Text>Địa chỉ: {item.address}</Text>
-                            <Text>Ngày đặt: {new Date(item.createdAt).toLocaleDateString()}</Text>
-                            <Text>Tổng tiền: {item.total} VND</Text>
+                        <View style={{ padding: 15, borderBottomWidth: 1, borderColor: "#ddd", marginBottom: 10 }}>
+                            <Text style={{ fontWeight: "bold", fontSize: 16 }}>Mã đơn hàng: {item._id}</Text>
+                            <Text>🧑‍🦱 Account: {item.userId?.name}</Text>
+                            <Text>👤 Người đặt: {item.userId?.name}</Text>
+                            <Text>📞 Số điện thoại: {item.addressId?.phone}</Text>
+                            <Text>📍 Địa chỉ: {item.addressId?.street}, {item.addressId?.district}, {item.addressId?.city}</Text>
+                            <Text>📅 Ngày đặt: {new Date(item.createdAt).toLocaleDateString()}</Text>
+                            <Text>💰 Tổng tiền: {item.total.toLocaleString()} VND</Text>
+                            <Text>📦 Trạng thái: <Text style={{ fontWeight: "bold", color: "blue" }}>{item.status}</Text></Text>
 
-                            <Text style={{ fontWeight: "bold", marginTop: 5 }}>Sản phẩm:</Text>
+                            <Text style={{ fontWeight: "bold", marginTop: 5 }}>🛒 Sản phẩm:</Text>
                             {item.products.map((product, index) => (
-                                <Text key={index}>- {product.name} (SL: {product.quantity})</Text>
+                                <View key={index} style={{ flexDirection: "row", alignItems: "center", marginBottom: 5 }}>
+                                    <View>
+                                        <Text style={{ fontWeight: "bold" }}>{product.productId?.name}</Text>
+                                        <Text>Size: {product.size} | SL: {product.quantity} | {product.price.toLocaleString()} VND</Text>
+                                    </View>
+                                </View>
                             ))}
 
                             <TouchableOpacity
                                 onPress={() => handleDeliverOrder(item._id)}
-                                style={{ backgroundColor: "red", padding: 10, marginTop: 10 }}
+                                style={{
+                                    backgroundColor: "red",
+                                    padding: 10,
+                                    marginTop: 10,
+                                    borderRadius: 5,
+                                }}
                             >
-                                <Text style={{ color: "white", textAlign: "center" }}>Giao hàng</Text>
+                                <Text style={{ color: "white", textAlign: "center", fontWeight: "bold" }}>✅ Giao hàng</Text>
                             </TouchableOpacity>
                         </View>
                     )}

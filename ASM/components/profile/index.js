@@ -27,7 +27,7 @@ const Profile = () => {
       setUserId(id);
       const response = await axios.get(`${API_BASE_URL}/api/users/profile/${id}`);
       console.log("Dữ liệu người dùng:", response.data);
-      
+
       setUser(response.data);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu người dùng:", error.response?.data || error);
@@ -57,27 +57,31 @@ const Profile = () => {
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity>
-        <Image source={require("../../assets/rv_logo.png")} style={styles.profileImage} />
+        <Image
+          source={user?.avatar ? { uri: user.avatar } : require("../../assets/rv_logo.png")}
+          style={styles.profileImage}
+        />
       </TouchableOpacity>
       <Text style={styles.nameText}>{user?.name}</Text>
       <Text style={styles.emailText}>{user?.email}</Text>
+      <Text style={styles.emailText}>{user?.birthday ? `Ngày sinh: ${new Date(user.birthday).toLocaleDateString()}` : "Chưa cập nhật ngày sinh"}</Text>
 
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate("UpdateProfile", { userId, refreshProfile: fetchUser })}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("UpdateProfile", { userId })}
       >
         <Text style={styles.buttonText}>Thay đổi thông tin tài khoản</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.button} 
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => navigation.navigate("ChangePassword", { userId })}
       >
         <Text style={styles.buttonText}>Đổi mật khẩu</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.button} 
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => navigation.navigate("orderManage")}
       >
         <Text style={styles.buttonText}>Quản lý & thông kê</Text>

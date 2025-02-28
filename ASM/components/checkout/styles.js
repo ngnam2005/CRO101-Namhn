@@ -3,65 +3,65 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
         backgroundColor: "#fff",
-        paddingTop: 55
+        padding: 16,
     },
     backButton: {
         position: "absolute",
-        top: 25,
-        left: 20
+        top: 40,
+        left: 16,
+        zIndex: 10,
+    },
+    addressSelection: {
+        backgroundColor: "#f8f8f8",
+        padding: 12,
+        borderRadius: 8,
+        marginVertical: 16,
+        borderWidth: 1,
+        borderColor: "#ddd",
+    },
+    boldText: {
+        fontWeight: "bold",
+        fontSize: 16,
     },
     productContainer: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#f8f8f8",
-        padding: 10,
-        borderRadius: 10,
-        marginBottom: 10,
+        padding: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+        paddingTop: 20,
+        marginTop:20
     },
     image: {
         width: 80,
         height: 80,
-        resizeMode: "contain",
-        borderRadius: 10,
-        marginRight: 10
+        marginRight: 12,
+        borderRadius: 8,
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "bold",
-        marginBottom: 5
     },
     text: {
-        fontSize: 16,
-        marginBottom: 3
+        fontSize: 14,
+        color: "#555",
     },
-    input: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 10,
-        fontSize: 16,
-        marginTop: 10,
-        marginBottom: 10
+    priceDetails: {
+        paddingVertical: 12,
+        borderTopWidth: 1,
+        borderTopColor: "#ddd",
+        marginVertical: 16,
     },
     paymentButton: {
         backgroundColor: "#ff6600",
-        padding: 15,
-        borderRadius: 10,
+        padding: 14,
+        borderRadius: 8,
         alignItems: "center",
-        marginTop: 20
     },
     paymentButtonText: {
         color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold"
-    },
-    boldText: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "bold",
-        color: "#333",
     },
-    
-    
 });

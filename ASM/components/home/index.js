@@ -19,7 +19,18 @@ function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [cartCount, setCartCount] = useState(0);
+  const [randomProducts, setRandomProducts] = useState([]);
 
+
+  // Top Selling 
+  const fetchRandomProducts = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/api/products/random`);
+        setRandomProducts(response.data);
+    } catch (error) {
+        console.error("Lỗi khi lấy sản phẩm ngẫu nhiên:", error);
+    }
+};
   // Lấy danh mục sản phẩm
   const fetchCategories = async () => {
     try {
@@ -103,6 +114,7 @@ function Home() {
       await fetchCategories();
       await fetchProducts();
       await fetchCartCount();
+      await fetchRandomProducts();
       setLoading(false);
     };
     loadData();
@@ -206,23 +218,25 @@ function Home() {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={product}
+            data={randomProducts} // Sử dụng danh sách sản phẩm ngẫu nhiên
             keyExtractor={(item) => item._id.toString()}
             renderItem={({ item }) => (
-              <View style={styles.productContainer}>
-                <TouchableOpacity>
-                  <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productImage} />
-                  <Text style={styles.productName}>
-                    {item.name.length > 15 ? item.name.substring(0, 12) + "..." : item.name}
-                  </Text>
-                  <Text style={styles.productPrice}>{item.price.toLocaleString()} VND</Text>
-                </TouchableOpacity>
-              </View>
+                <View style={styles.productContainer}>
+                    <TouchableOpacity
+                     onPress={() => navigation.navigate("Detail", { product: item })}
+                    >
+                        <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productImage} />
+                        <Text style={styles.productName}>
+                            {item.name.length > 15 ? item.name.substring(0, 12) + "..." : item.name}
+                        </Text>
+                        <Text style={styles.productPrice}>{item.price.toLocaleString()} VND</Text>
+                    </TouchableOpacity>
+                </View>
             )}
-          />
+        />
+
         )}
 
-        {/* Home Products */}
         <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 16 }}>Home</Text>
         {loading ? (
           <ActivityIndicator size="large" color="blue" />
