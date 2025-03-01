@@ -46,10 +46,27 @@ const Profile = () => {
 
   // Hàm đăng xuất
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("userId");
-    navigation.replace("Login");
+    Alert.alert(
+      "Xác nhận đăng xuất",
+      "Bạn có chắc chắn muốn đăng xuất?",
+      [
+        {
+          text: "Hủy",
+          style: "cancel",
+        },
+        {
+          text: "Đăng xuất",
+          onPress: async () => {
+            await AsyncStorage.removeItem("userId");
+            navigation.replace("Login");
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
   };
-
+  
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, Image , ScrollView, RefreshControl} from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator, Image, ScrollView, RefreshControl } from "react-native";
 import axios from "axios";
 import API_BASE_URL from "../localhost/localhost";
 
@@ -46,14 +46,14 @@ const ConfirmScreen = () => {
             {loading ? (
                 <ActivityIndicator size="large" color="blue" />
             ) : orders.length === 0 ? (
-                <ScrollView 
-                contentContainerStyle={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-                refreshControl={
-                    <RefreshControl refreshing={loading} onRefresh={fetchOrders} />
-                }
-            >
-                <Text style={{ textAlign: "center", fontSize: 16 }}>Không có đơn hàng nào</Text>
-            </ScrollView>
+                <ScrollView
+                    contentContainerStyle={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                    refreshControl={
+                        <RefreshControl refreshing={loading} onRefresh={fetchOrders} />
+                    }
+                >
+                    <Text style={{ textAlign: "center", fontSize: 16 }}>Không có đơn hàng nào</Text>
+                </ScrollView>
             ) : (
                 <FlatList
                     data={orders}
@@ -61,13 +61,13 @@ const ConfirmScreen = () => {
                     refreshing={loading}
                     onRefresh={fetchOrders}
                     renderItem={({ item }) => (
-                        console.log(item.addressId),
+                        console.log(item),
                         <View style={{ padding: 15, borderBottomWidth: 1, borderColor: "#ddd", marginBottom: 10 }}>
                             <Text style={{ fontWeight: "bold", fontSize: 16 }}>Mã đơn hàng: {item._id}</Text>
                             <Text>🧑‍🦱 Account: {item.userId?.name}</Text>
                             <Text>👤 Người đặt: {item.userId?.name}</Text>
                             <Text>📞 Số điện thoại: {item.addressId?.phone}</Text>
-                            <Text>📍 Địa chỉ: {item.addressId?.street}, {item.addressId?.district}, {item.addressId?.city}</Text>
+                            <Text>📍 Địa chỉ: {item.addressId?.specific} {item.addressId?.village},{item.addressId?.ward}, {item.addressId?.district}, {item.addressId?.province}</Text>
                             <Text>📅 Ngày đặt: {new Date(item.createdAt).toLocaleDateString()}</Text>
                             <Text>💰 Tổng tiền: {item.total.toLocaleString()} VND</Text>
                             <Text>📦 Trạng thái: <Text style={{ fontWeight: "bold", color: "blue" }}>{item.status}</Text></Text>

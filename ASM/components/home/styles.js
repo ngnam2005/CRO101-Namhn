@@ -97,8 +97,7 @@ export const styles = StyleSheet.create({
   },
   productGridPrice: {
     fontSize: 14,
-    color: "#FF5733",
-    fontWeight: "bold",
+    color: "black",
     marginTop: 3,
   },
   addToCartButton: {
@@ -147,6 +146,14 @@ export const styles = StyleSheet.create({
   productPrice: {
     fontSize: 11,
     fontStyle: "normal",
-  }
+  },
+  favoriteIcon: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.6)", // Nền mờ để icon nổi bật hơn
+    borderRadius: 20,
+    padding: 5,
+  },
 
 });

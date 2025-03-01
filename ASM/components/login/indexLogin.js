@@ -19,26 +19,37 @@ const Login = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [checked, setCheck] = useState(false);
 
-    // Cấu hình Google OAuth
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: "474059777097-qnt8huep9las2coo65oqnv1679n4pn1a.apps.googleusercontent.com",
-        iosClientId: "474059777097-qa706vjnj774u2vi7gvq6fa4ek52hisv.apps.googleusercontent.com",
-        webClientId: "474059777097-74n97avtb9qsvhap7okc53dgs36t7l1o.apps.googleusercontent.com",
-        expoClientId: "474059777097-74n97avtb9qsvhap7okc53dgs36t7l1o.apps.googleusercontent.com",
-        redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
-    });
 
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        clientId: "879610147658-sghin3of1q3nlddq92rndk8561bt8551.apps.googleusercontent.com",
+        iosClientId: "879610147658-8ivf4d5he6ksgv6l2l1f1jq84ng3foak.apps.googleusercontent.com", // iOS Client ID
+        androidClientId: "879610147658-sghin3of1q3nlddq92rndk8561bt8551.apps.googleusercontent.com", // Android Client ID
+        redirectUri: "https://auth.expo.io/@hngnam04/ASM", // Đúng định dạng Expo
+        scopes: ["profile", "email"],
+        useProxy: true,  // ✅ Cần cho thiết bị thật
+    });
 
     useEffect(() => {
         checkLogin();
     }, []);
 
     useEffect(() => {
+        console.log("Google Auth Response:", response); // In response để kiểm tra
+
         if (response?.type === "success") {
-            const { authentication } = response;
-            handleGoogleLogin(authentication.accessToken);
+            const { idToken } = response.authentication;
+            if (idToken) {
+                handleGoogleLogin(idToken);
+            } else {
+                Alert.alert("Lỗi", "Không thể lấy ID Token từ Google.");
+            }
+        } else if (response?.type === "error") {
+            Alert.alert("Lỗi Google", response.error?.message || "Đăng nhập thất bại.");
+            console.error("Lỗi Google Auth:", response);
         }
     }, [response]);
+
 
     const checkLogin = async () => {
         const storedUserId = await AsyncStorage.getItem("userId");
@@ -71,9 +82,9 @@ const Login = ({ navigation }) => {
         }
     };
 
-    const handleGoogleLogin = async (accessToken) => {
+    const handleGoogleLogin = async (idToken) => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/users/google-login`, { accessToken });
+            const response = await axios.post(`${API_BASE_URL}/api/users/google-login`, { token: idToken });
             const user = response.data.user;
 
             if (user) {
@@ -102,8 +113,11 @@ const Login = ({ navigation }) => {
                 <Input label="Password" placeholder="*********" isPassword={true} value={password} onChangeText={setPassword} />
 
                 <View style={styles.checkRow}>
-                    <CheckBox checked={checked} onCheck={setCheck} />
-                    <Text style={styles.checkText}>Remember me ?</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <CheckBox checked={checked} onCheck={setCheck} />
+                        <Text style={styles.checkText}>Remember me?</Text>
+                    </View>
+
                     <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
                         <Text style={styles.forgotText}>Forgot password</Text>
                     </TouchableOpacity>
@@ -119,15 +133,14 @@ const Login = ({ navigation }) => {
                         <Image source={require('../../assets/google.png')} style={styles.socialIcon} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.socialButton} >
+                    <TouchableOpacity style={styles.socialButton}>
                         <Image source={require('../../assets/facebook.png')} style={styles.socialIcon} />
-
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialButton} >
+
+                    <TouchableOpacity style={styles.socialButton}>
                         <Image source={require('../../assets/apple-logo.png')} style={styles.socialIcon} />
                     </TouchableOpacity>
                 </View>
-
 
                 <View style={styles.registerContainer}>
                     <Text style={styles.registerText}>Don't have an account? </Text>

@@ -5,6 +5,8 @@ import Home from "../home";
 import Profile from "../profile";
 import Cart from "../cart";
 import OrderScreen from "../order";
+import FavoriteScreen from "../favoriteScreen";
+
 
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +27,9 @@ const Tabs = () => {
                     else if (route.name === "Cart") {
                         iconName = focused ? "bag" : "bag-outline";
                     }
+                    else if (route.name === "Favorite") {
+                        iconName = focused ? "heart" : "heart-outline";
+                    }
 
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
@@ -41,6 +46,7 @@ const Tabs = () => {
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Cart" component={Cart} />
             <Tab.Screen name="Order" component={OrderScreen} />
+            <Tab.Screen name="Favorite" component={FavoriteScreen} />
             <Tab.Screen name="Profile" component={Profile} />
             
         </Tab.Navigator>

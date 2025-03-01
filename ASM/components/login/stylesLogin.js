@@ -95,15 +95,15 @@ export const styles = StyleSheet.create({
     forgotText: {
         textAlign: "right",
         color: "#0b5394",
-        
+
     },
     checkRow: {
         flexDirection: 'row',
         alignContent: 'center',
-        justifyContent:"space-between"
+        justifyContent: "space-between"
     },
     checkText: {
         color: "#4F63AC",
-        marginHorizontal: 13,
+        marginHorizontal: 15
     }
 });

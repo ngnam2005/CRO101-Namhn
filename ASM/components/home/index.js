@@ -9,7 +9,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
 import API_BASE_URL from "../localhost/localhost";
-
+import AddCategory from "../addCategory";
 
 function Home() {
   const navigation = useNavigation();
@@ -20,17 +20,19 @@ function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cartCount, setCartCount] = useState(0);
   const [randomProducts, setRandomProducts] = useState([]);
+  const [favoriteList, setFavoriteList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
 
   // Top Selling 
   const fetchRandomProducts = async () => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/api/products/random`);
-        setRandomProducts(response.data);
+      const response = await axios.get(`${API_BASE_URL}/api/products/random`);
+      setRandomProducts(response.data);
     } catch (error) {
-        console.error("Lỗi khi lấy sản phẩm ngẫu nhiên:", error);
+      console.error("Lỗi khi lấy sản phẩm ngẫu nhiên:", error);
     }
-};
+  };
   // Lấy danh mục sản phẩm
   const fetchCategories = async () => {
     try {
@@ -40,7 +42,6 @@ function Home() {
       console.error("Lỗi khi lấy danh mục:", error);
     }
   };
-
   // Lấy danh sách sản phẩm
   const fetchProducts = async () => {
     try {
@@ -50,7 +51,6 @@ function Home() {
       console.error("Lỗi khi lấy sản phẩm:", error);
     }
   };
-
   // Lấy số lượng sản phẩm trong giỏ hàng
   const fetchCartCount = async () => {
     try {
@@ -127,6 +127,12 @@ function Home() {
     }, [])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts();
+    }, [])
+  );
+
   // Hàm xử lý kéo để làm mới dữ liệu
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -136,6 +142,47 @@ function Home() {
     await addToCart();
     setRefreshing(false);
   }, []);
+
+  const refreshCategories = async () => {
+    await fetchCategories();
+  };
+
+  const toggleFavorite = async (product) => {
+    try {
+      let updatedList;
+      if (favoriteList.some((item) => item._id === product._id)) {
+        updatedList = favoriteList.filter((item) => item._id !== product._id);
+      } else {
+        updatedList = [...favoriteList, product];
+      }
+
+      setFavoriteList(updatedList);
+      await AsyncStorage.setItem("favorites", JSON.stringify(updatedList));
+    } catch (error) {
+      console.error("Lỗi khi cập nhật danh sách yêu thích:", error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadFavorites = async () => {
+        try {
+          const storedFavorites = await AsyncStorage.getItem("favorites");
+          if (storedFavorites) {
+            setFavoriteList(JSON.parse(storedFavorites));
+          } else {
+            setFavoriteList([]);
+          }
+        } catch (error) {
+          console.error("Lỗi khi lấy danh sách yêu thích:", error);
+        }
+      };
+      loadFavorites();
+    }, [])
+  );
+
+
+
 
   return (
     <View style={styles.container}>
@@ -189,7 +236,6 @@ function Home() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Categories */}
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>Categories</Text>
         {loading ? (
           <ActivityIndicator size="large" color="blue" />
@@ -197,18 +243,33 @@ function Home() {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={categories}
-            keyExtractor={(item) => item._id.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.categoryItem}>
-                <TouchableOpacity onPress={() => navigation.navigate("categoryScreen", { categoryId: item._id })}>
-                  <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.categoryImage} />
-                  <Text>{item.name}</Text>
+            data={[...categories, { _id: "add" }]}
+            keyExtractor={(item) => item._id?.toString() || Math.random().toString()}
+            renderItem={({ item }) =>
+              item._id === "add" ? (
+                <TouchableOpacity
+                  style={[styles.categoryItem]}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Ionicons name="add-circle" size={50} color="blue" />
+                  <Text style={{ textAlign: "center" }}>Add</Text>
                 </TouchableOpacity>
-              </View>
+              ) : (
+                <View style={styles.categoryItem}>
+                  <TouchableOpacity onPress={() => navigation.navigate("categoryScreen", { categoryId: item._id })}>
+                    <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.categoryImage} />
+                    <Text>{item.name}</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
+            ListEmptyComponent={() => (
+              <Text style={{ textAlign: "center", marginTop: 10 }}>No categories available</Text>
             )}
+            nestedScrollEnabled={true}
           />
         )}
+
 
         {/* Top Selling */}
         <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 16 }}>Top Selling</Text>
@@ -221,19 +282,20 @@ function Home() {
             data={randomProducts} // Sử dụng danh sách sản phẩm ngẫu nhiên
             keyExtractor={(item) => item._id.toString()}
             renderItem={({ item }) => (
-                <View style={styles.productContainer}>
-                    <TouchableOpacity
-                     onPress={() => navigation.navigate("Detail", { product: item })}
-                    >
-                        <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productImage} />
-                        <Text style={styles.productName}>
-                            {item.name.length > 15 ? item.name.substring(0, 12) + "..." : item.name}
-                        </Text>
-                        <Text style={styles.productPrice}>{item.price.toLocaleString()} VND</Text>
-                    </TouchableOpacity>
-                </View>
+              <View style={styles.productContainer}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Detail", { product: item })}
+                >
+                  <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productImage} />
+                  <Text style={styles.productName}>
+                    {item.name.length > 15 ? item.name.substring(0, 12) + "..." : item.name}
+                  </Text>
+                  <Text style={styles.productPrice}>{item.price.toLocaleString()} VND</Text>
+                </TouchableOpacity>
+              </View>
             )}
-        />
+            nestedScrollEnabled={true}
+          />
 
         )}
 
@@ -242,36 +304,51 @@ function Home() {
           <ActivityIndicator size="large" color="blue" />
         ) : (
           <FlatList
-          data={product}
-          keyExtractor={(item) => item._id.toString()}
-          numColumns={2}
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-          renderItem={({ item }) => (
-            <View style={styles.productGrid}>
-              <TouchableOpacity
-                style={styles.productCard}
-                onPress={() => navigation.navigate("Detail", { product: item })}
-              >
-                <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productGridImage} />
-                <Text style={styles.productName}>
-                  {item.name.length > 15 ? item.name.substring(0, 14) + "..." : item.name}
-                </Text>
-                <Text style={styles.productGridPrice}>{item.price.toLocaleString()} VND</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(item)}>
-                <Ionicons name="add-circle" size={24} color="#FF5733" />
-              </TouchableOpacity>
-            </View>
-          )}
-          extraData={cartCount} 
-        />
+            data={product}
+            keyExtractor={(item) => item._id.toString()}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+            renderItem={({ item }) => (
+              <View style={styles.productGrid}>
+                <TouchableOpacity
+                  style={styles.productCard}
+                  onPress={() => navigation.navigate("Detail", { product: item })}
+                >
+                  <Image source={{ uri: `${API_BASE_URL}${item.image}` }} style={styles.productGridImage} />
+                  <Text style={styles.productName}>
+                    {item.name.length > 15 ? item.name.substring(0, 14) + "..." : item.name}
+                  </Text>
+                  <Text style={styles.productGridPrice}>{item.price.toLocaleString()} VND</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(item)}>
+                  <Ionicons name="add-circle" size={24} color="#FF5733" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => toggleFavorite(item)} style={styles.favoriteIcon}>
+                  <Ionicons
+                    name={favoriteList.some(fav => fav._id === item._id) ? "heart" : "heart-outline"}
+                    size={24}
+                    color={favoriteList.some(fav => fav._id === item._id) ? "red" : "gray"}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+            extraData={cartCount}
+            nestedScrollEnabled={true}
+          />
         )}
       </ScrollView>
 
       <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddProduct")}>
         <Ionicons name="add" size={40} color="white" />
       </TouchableOpacity>
+
+      {/* Modal Thêm danh mục */}
+      <AddCategory
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onCategoryAdded={refreshCategories}
+      />
     </View>
   );
 }

@@ -7,6 +7,8 @@ import API_BASE_URL from "../localhost/localhost";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import CheckBox from "../checkBox/index"; // Import CheckBox
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 const sizeOptions = ["S", "M", "L", "XL", "XXL"]; // Danh sách kích thước
 
@@ -14,12 +16,14 @@ const AddProduct = ({ navigation }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
-  const [price, setPrice] = useState(""); 
+  const [price, setPrice] = useState("");
   const [sizes, setSizes] = useState([]); // Mảng chứa size được chọn
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  
 
   // Lấy danh mục sản phẩm từ API
   useEffect(() => {
@@ -117,12 +121,12 @@ const AddProduct = ({ navigation }) => {
           <View style={styles.checkboxContainer}>
             {sizeOptions.map((size, index) => (
               <View key={index} style={styles.checkboxItem}>
-                <CheckBox 
-                    checked={sizes.includes(size)} 
-                    onCheck={(isChecked) => {
-                      setSizes((prevSizes) => isChecked ? [...prevSizes, size] : prevSizes.filter(s => s !== size));
-                    }} 
-                  />
+                <CheckBox
+                  checked={sizes.includes(size)}
+                  onCheck={(isChecked) => {
+                    setSizes((prevSizes) => isChecked ? [...prevSizes, size] : prevSizes.filter(s => s !== size));
+                  }}
+                />
                 <Text style={styles.checkboxLabel}>{size}</Text>
               </View>
             ))}

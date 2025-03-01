@@ -14,7 +14,7 @@ const WelcomeScreen = ({ navigation }) => {
         <Text style={styles.subtitle}>Find it here, buy it now!</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Login")} 
+          onPress={() => navigation.navigate("AuthLoadingScreen")} 
         >
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>

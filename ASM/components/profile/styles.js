@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         color: "gray",
         textAlign: "center",
-        marginBottom: 20,
+        marginBottom: 10,
     },
     button: {
         backgroundColor: "#0b5394",

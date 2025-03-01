@@ -79,7 +79,7 @@ const OrderManage = () => {
                         <View style={styles.orderItem}>
                             <Text>👤 Người đặt: {item.userId?.name}</Text>
                             <Text>📞 Số điện thoại: {item.addressId?.phone}</Text>
-                            <Text>📍 Địa chỉ: {item.addressId?.street}, {item.addressId?.district}, {item.addressId?.city}</Text>
+                            <Text>📍 Địa chỉ:  {item.addressId?.specific} {item.addressId?.village},{item.addressId?.ward}, {item.addressId?.district}, {item.addressId?.province}</Text>
                             <Text>📅 Ngày đặt: {new Date(item.createdAt).toLocaleDateString()}</Text>
                             <Text>💰 Tổng tiền: {item.total.toLocaleString()} VND</Text>
 

@@ -66,7 +66,7 @@ const ShippingScreen = () => {
                             <Text>🧑‍🦱 Account: {item.userId?.name}</Text>
                             <Text>👤 Người đặt: {item.userId?.name}</Text>
                             <Text>📞 Số điện thoại: {item.addressId?.phone}</Text>
-                            <Text>📍 Địa chỉ: {item.addressId?.street}, {item.addressId?.district}, {item.addressId?.city}</Text>
+                            <Text>📍 Địa chỉ:  {item.addressId?.specific} {item.addressId?.village},{item.addressId?.ward}, {item.addressId?.district}, {item.addressId?.province}</Text>
                             <Text>📅 Ngày đặt: {new Date(item.createdAt).toLocaleDateString()}</Text>
                             <Text>💰 Tổng tiền: {item.total.toLocaleString()} VND</Text>
                             <Text>📦 Trạng thái: <Text style={{ fontWeight: "bold", color: "blue" }}>{item.status}</Text></Text>
